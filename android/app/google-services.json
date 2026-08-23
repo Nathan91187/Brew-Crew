@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649053804470",
+    "project_id": "brew-crew-bc72c",
+    "storage_bucket": "brew-crew-bc72c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649053804470:android:2816582382abca05ca9317",
+        "android_client_info": {
+          "package_name": "com.natefl.brew_crew"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRLPJOOqrIZGcZBgCs98pi1IgS-G9ktgY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
