@@ -11,5 +11,5 @@ class MyApp extends StatelessWidget {
         initialData: initialData,
         child: MaterialApp(
           home: Wrapper(),
-        ),
+        ));
 }
