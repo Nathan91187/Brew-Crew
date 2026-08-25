@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<UserModel?>.value (
         value: Auth().user,
-        initialData: initialData,
+        initialData: null,
         child: MaterialApp(
           home: Wrapper(),
         ));
