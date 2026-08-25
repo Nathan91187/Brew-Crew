@@ -27,4 +27,32 @@ class Auth {
       return null;
     }
   }
+  Future signOut() async{
+    try{
+      await auth.signOut();
+    }
+    catch(e){
+      return e.toString();
+    }
+  }
+  Future registerWithEmailAndPassword(String email, String password) async{
+    try {
+      final result = await auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return userReturn(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+  Future signInWithEmailAndPassword(String email, String password) async{
+    try{
+      final result = await auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+      return userReturn(user);
+    }
+    catch(e){
+      return null;
+    }
+  }
 }
