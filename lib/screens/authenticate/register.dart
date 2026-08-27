@@ -1,5 +1,5 @@
-import 'package:brew_crew/screens/authenticate/sign_in.dart';
-import 'package:brew_crew/screens/home/home.dart';
+import 'package:brew_crew/shared/common.dart';
+import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/auth.dart';
@@ -19,10 +19,11 @@ class _RegisterState extends State<Register> {
   String email = '';
   String pass = '';
   String error = '';
+  bool loading = false;
   final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading(): Scaffold(
         backgroundColor: Colors.brown[100],
         appBar: AppBar(
           title: Text("Register to Brew Crew",
@@ -64,8 +65,9 @@ class _RegisterState extends State<Register> {
                   height: 20,
                 ),
                 TextFormField(
+                  decoration: textFieldDecoration.copyWith(hintText: "Email"),
                   validator: (val) {
-                    if(val == null){
+                    if(val == null || val.isEmpty){
                 return 'email shouldn\'t be empty';
           }
               return null;
@@ -78,6 +80,7 @@ class _RegisterState extends State<Register> {
                     height: 20
                 ),
                 TextFormField(
+                  decoration: textFieldDecoration.copyWith(hintText: "Password"),
                   validator: (val) {
                     if(val == null || val.length < 6){
                       return 'password should be longer than 5 characters';
@@ -98,10 +101,14 @@ class _RegisterState extends State<Register> {
                   ),
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
+                      setState(() {
+                        loading = true;
+                      });
                       final result = await auth.registerWithEmailAndPassword(email, pass);
                       if(result == null){
                         setState(() {
                           error = "Please feed a valid email";
+                          loading = false;
                         });
                       }
                     }

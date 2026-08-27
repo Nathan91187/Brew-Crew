@@ -1,9 +1,8 @@
 import 'package:brew_crew/screens/authenticate/authenticate.dart';
 import 'package:brew_crew/services/auth.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:brew_crew/shared/common.dart';
+import 'package:brew_crew/shared/loading.dart';
 import 'package:flutter/material.dart';
-
-import 'authenticate.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -22,9 +21,10 @@ class _SignInState extends State<SignIn> {
   String email = '';
   String pass = '';
   String error = '';
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading(): Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         leading: null,
@@ -60,13 +60,19 @@ class _SignInState extends State<SignIn> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Form(
+          key: _formkey,
           child: Column(
             children: [
               SizedBox(
                 height: 20,
               ),
               TextFormField(
-                validator: (val) => val!.isEmpty ? "Email cant be empty" : null,
+                decoration: textFieldDecoration.copyWith(hintText: "Email"),
+                validator: (val) {
+                  if(val == null || val.isEmpty){
+                    return "Email can't be empty";
+                  }
+                },
                 onChanged: (val){
                       email = val;
                 },
@@ -75,6 +81,7 @@ class _SignInState extends State<SignIn> {
                 height: 20
               ),
               TextFormField(
+                decoration: textFieldDecoration.copyWith(hintText: "Password"),
                 validator: (val) {
                   if(val == null || val.length < 6){
                     return 'password has to be at least 6 characters';
@@ -94,12 +101,17 @@ class _SignInState extends State<SignIn> {
                   backgroundColor: Colors.pink
                 ),
                   onPressed: () async{
-
-                    final user = await auth.signInWithEmailAndPassword(email, pass);
-                    if(user == null){
+                    if (_formkey.currentState!.validate()) {
                       setState(() {
-                        error = 'No user with the specified credentials!';
+                        loading = true;
                       });
+                      final user = await auth.signInWithEmailAndPassword(email, pass);
+                      if(user == null){
+                        setState(() {
+                          error = 'No user with the specified credentials!';
+                          loading = false;
+                        });
+                      }
                     }
                   },
                 child: Text(
