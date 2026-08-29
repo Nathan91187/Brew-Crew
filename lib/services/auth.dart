@@ -50,7 +50,9 @@ class Auth {
   Future signInWithEmailAndPassword(String email, String password) async{
     try{
       final result = await auth.signInWithEmailAndPassword(email: email, password: password);
+
       User? user = result.user;
+      await DatabaseSetup(uid: user!.uid).updateUserData("new crew member", "0", 100);
       return userReturn(user);
     }
     catch(e){
